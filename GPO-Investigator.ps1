@@ -1,4 +1,4 @@
-﻿$GPOs = Get-GPO -All
+$GPOs = Get-GPO -All
 foreach ($GPO in $GPOs) {
     Write-Host "[+] Analyzing GPO: $($GPO.DisplayName)"
 
@@ -12,6 +12,17 @@ foreach ($GPO in $GPOs) {
         foreach ($accountSetting in $accountSettings) {
             if ($accountSetting) {
                 Write-Host "`t`tFound Account Setting: $($accountSetting.Name)"
+            }
+        }
+    }
+
+    # Extracting the defined System Services
+    $systemServices = $currentGPO.GPO.Computer.ExtensionData.Extension.SystemServices
+    if ($systemServices) {
+        Write-Host "`t[+] Analyzing System Services"
+        foreach ($systemService in $systemServices) {
+            if ($systemService) {
+                Write-Host "`t`tFound System Service: $($systemService.Name)"
             }
         }
     }
